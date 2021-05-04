@@ -1,0 +1,71 @@
+Structure REACT moderne : React est composé de plusieurs 'composants' dont chacun :: 
+import React from 'react'
+    REACT :: 1 COMPOPOSANT
+    1 COMPOSANT => 1 FONCTION
+    FONCTION : RENVOIE TOUJOURS QUELQUE CHOSE (JSX)
+export     
+----------------------
+
+  Arborescence des composants : react-course
+Les fichiers .js commencant par une lettre majuscule, sont des composants 
+
+Dans react :: chaque composant doit avoir une balsie supérieur. 
+souvent efectuer par des fragment :: <>
+
+______-----------_________
+Quick note for App.js => rsc() 
+stand for ReactStateless, permet de créer un modele vide de composant. 
+
+lorem ipsum quick : taper dans un <p> lorem60 </p> ou un autre chiifre  
+
+Structure général dans SRC
+App.js
+index.js
+*components
+*pages
+*styles
+
+NavLink +/- a href
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
