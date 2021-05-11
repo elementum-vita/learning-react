@@ -28,30 +28,153 @@ index.js
 NavLink +/- a href
 
 
+-----------------------------------------------------
+stocker des données :: HOOKS =>
+
+const Countries = () => 
+  const [data, setData] = useState("Hello");
+  return <div>{data}</div>
+
+
+  data      => element dans lequel on met nos donnees
+  setData   => element par lequel on passe pour actualiser cette donnee 
+  useState  => 
+
+--
+const Countries = () => {
+    const [data, setData] = useState("Hello");
+
+    const sayGoodbye = () => {
+        setData("Goodbye");
+    }
+
+    return <div>
+        {data}
+        /*un peu comme un event listener en js */
+        <button onClick={sayGoodbye}>Dire au revoir</button>
+    </div>;
+};
+
+
+---
+logs (console) dans react sont souvent affiche en double
+
+
+
+_________________________-------------------------------__________________________
+API & axios
+ npm i -s axios
+
+useEffect : 
+en ajoutant un callback vide [] à la fin du useEffect ::
+  }, []); 
+ça signifie que le useEffect n'est lu qu'une seule fois
+  C-A-D : lorsque le composant est mis en place, tu le li et le joue une fois, puis tu t'arretes.
+A MOINS qu'il y est une element dans les crochets [] 
+  ex [data], à ce moment là, à chaque fois que la data se mets a jour, 
+    tu rejoue/lis le 'useEffect' => boucle infini
+
+Si on mets [data], mais qu'on veut qu'il ne l'effectue qu'une seule fois : :
+    const [playOnce, setPlayOnce] = useState(true);
+     
 
 
 
 
 
 
+------
+ne pas mettre d'accolades {} après un data.map 
+
+______////_________////______////_________
+return (
+    <div className="countries">
+        <ul className="countries-list">
+/*on peut inclure du JS dans du react ::*/
+            {data.map((country) => (
+                <li>
+                    {country.name}
+                </li>
+            ))}
+        </ul>
+    </div>
+)
+;
+______////_________////______////_________
+Comment on fait pour passer des donnes a un component (ex. donnees de Card à Countries)
+  PROPS :: 
+<Card country={country} />
+le 'country' de map repond au nom de 'country' dans le component Card 
+la valeur a droite transmets sa valeur à gauche
+
+COUNTRIES.JS ::
+...
+return (
+        <div className="countries">
+            <ul className="countries-list">
+                {data.map((country) => (
+                    <Card country={country} />  /*PROPS*/
+                ))}
+            </ul>
+        </div>
+    )
+    ;
+
+CARD.JS :: 
+import React from 'react';
+
+const Card = (props) => {
+    return (
+        <div>
+            Card
+        </div>
+    );
+};
+
+export default Card;
+
+*******
+index.js:1 Warning: Each child in a list should have a unique "key" prop.
+donc : ...<Card country={country} key={country.name}/>
+
+******************_______________________****************************___
+DESTRUCTURING :: 
+props.{ce qu'il y a entre crochets}
+
+const Card = (props) => {...
+  // destructuring 
+  const { country } = props;    ==    const country = props.country;
+...
 
 
+________________________________________________________
+Mettre des composants dans des composants :: 
 
+return (
+    <li className="card">
+        <img src={country.flag} alt="flag" />
+        <div className="data-container">
+            <ul>
+                <li>{country.name}</li>
+                <li>{country.capital}</li>
+                <li>Pop. {country.population}</li>
+            </ul>
+        </div>
+    </li>
+);
 
+-----------------------
+x => country.population
+const numberFormat = (x) => {
+    return x.toString().replace(/\B(?(\d{3})+(?!\d))/g, ",");
+}...
+  <li>Pop. {numberFormat(country.population)}</li>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+________________________________________________________.........
+TRIER LA data (Countries.js)
+const Countries = () => {
+    const [data, setData] = useState([]);
+    const [sortedData, setSortedData] = useState([]);
 
 
 
