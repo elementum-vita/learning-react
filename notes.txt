@@ -171,16 +171,95 @@ const numberFormat = (x) => {
   <li>Pop. {numberFormat(country.population)}</li>
 
 ________________________________________________________.........
-TRIER LA data (Countries.js)
-const Countries = () => {
-    const [data, setData] = useState([]);
-    const [sortedData, setSortedData] = useState([]);
+*-*-*-*-*TRIER LA data (Countries.js)
+    const Countries = () => {
+        const [data, setData] = useState([]);
+        const [sortedData, setSortedData] = useState([]);
+        const [playOnce, setPlayOnce] = useState(true);
+        const [rangeValue, setRangeValue] = useState(40);
+
+    useEffect(() => {
+        if (playOnce) {
+
+        axios
+            .get(
+                'http://restcountries.eu/rest/v2/all?fields=name;population;region;capital;flag'
+                )
+                .then((res) => {
+                    setData(res.data)
+                    setPlayOnce(false);
+                });
+        }
+
+        const sortedCountry = () => {
+            const countryObj = Object.keys(data).map((i) => data[i]);
+            const sortedArray = countryObj.sort((a,b) => {
+                return b.population - a.population
+            });
+            sortedArray.length = rangeValue;
+            setSortedData(sortedArray);
+        }
+        sortedCountry();
+    }, [data, rangeValue, playOnce]);
+    
+    return (
+        <div className="countries">
+            <div className="sort-container">
+                <input type="range" min="1" max="250" value={rangeValue} 
+                onChange={(e) => setRangeValue(e.target.value)}/>
+            </div>
+            <ul className="countries-list">
+                {sortedData.map((country) => (
+                    <Card country={country} key={country.name}/>
+                ))}
+            </ul>
+        </div>
+    )
+    ;
+};
 
 
+*-*-*-*-*-*TRIER selon les continents, avec input radio
+    const Countries = () => {
+        ...
+        const [selectedRadio, setSelectedRadio] = useState('');
+        const radios = ['Africa', 'America', 'Asia', 'Europe', 'Oceania']
 
+<div className="countries">
+...
+    <ul>
+                        {radios.map((radio) => { 
+                            /* javascript au lieu de html pour une économie de code,
+                            changer selectedRadio, au fur et a mesure qu'il est 'check'
+                            pour lié l'id et le htmlFor
+                            */
+                            return (  
+                                <li key={radio}>
+                                    <input 
+                                    type="radio" 
+                                    value={radio} 
+                                    id={radio} 
+                                    checked={radio === selectedRadio} 
+                                    onChange={(e) => setSelectedRadio(e.target.value)} 
+                                    />
+                                    <label htmlFor={radio}>{radio}</label> 
+                                </li>
+                            );
+                        })}                    
+    </ul>
+...
+</div>
+    <ul className="countries-list"> {/* pour faire le tri par continents*/}
+        {sortedData
+        .filter((country) => country.region.includes
+        (selectedRadio))
+        .map((country) => (
+            <Card country={country} key={country.name}/>
+        ))}
+    </ul>
+</div>
 
-
-
+*-*-*-*-*Bouttons pour annuler les radios (revenir tout afficher)
 
 
 
