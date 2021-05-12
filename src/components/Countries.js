@@ -7,8 +7,10 @@ const Countries = () => {
     const [sortedData, setSortedData] = useState([]);
     const [playOnce, setPlayOnce] = useState(true);
     const [rangeValue, setRangeValue] = useState(40);
+    const [selectedRadio, setSelectedRadio] = useState('');
+    const radios = ['Africa', 'America', 'Asia', 'Europe', 'Oceania']
 
-    useEffect(() => {
+    useEffect(() => {;
         if (playOnce) {
 
         axios
@@ -35,11 +37,41 @@ const Countries = () => {
     return (
         <div className="countries">
             <div className="sort-container">
-                <input type="range" min="1" max="250" value={rangeValue} 
-                onChange={(e) => setRangeValue(e.target.value)}/>
+                <input 
+                    type="range" 
+                    min="1" max="250" 
+                    value={rangeValue} 
+                    onChange={(e) => setRangeValue(e.target.value)}
+                />
+                <ul>
+                    {radios.map((radio) => { 
+                        /* javascript au lieu de html pour une économie de code,
+                        changer selectedRadio, au fur et a mesure qu'il est 'check'
+                        pour lié l'id et le htmlFor
+                           */
+                        return (  
+                            <li key={radio}>
+                                <input 
+                                type="radio" 
+                                value={radio} 
+                                id={radio} 
+                                checked={radio === selectedRadio} 
+                                onChange={(e) => setSelectedRadio(e.target.value)} 
+                                />
+                                <label htmlFor={radio}>{radio}</label> 
+                            </li>
+                        );
+                    })}                    
+                </ul>
             </div>
-            <ul className="countries-list">
-                {sortedData.map((country) => (
+            <div className="cancel"> {/* si le selectedRadio = true, alors tu affiche <h5>, puis setSelectedRadio (donc false, donc le h5 disparait) */}
+                {selectedRadio && <h5 onClick={() => setSelectedRadio("")}>Annuler recherche</h5>}
+            </div>
+            <ul className="countries-list"> {/* pour faire le tri par continents*/}
+                {sortedData
+                .filter((country) => country.region.includes
+                (selectedRadio))
+                .map((country) => (
                     <Card country={country} key={country.name}/>
                 ))}
             </ul>
